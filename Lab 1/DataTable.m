@@ -1,5 +1,6 @@
 % Creates an ETable from the Raw Data File
 function T = DataTable()
+    addpath('..');
     % Load Every Column, Giving them Each a Variable Name:
     %T = ETable('test1.xlsx', ["t","F","x1", "x2","v1", "v2","a1", "a2"]); % Long-form names used in plotting are automatically imported from column headers
     %save('test1.mat', 'T'); % Cached loaded file
@@ -16,5 +17,6 @@ function T = DataTable()
     T.multiplot('t', 'F', 'x1','x2'); % Plot F, x1, and x2 vs t
     
     figure();
+    subplot 
     T.plot('x1','F');
 end
