@@ -8,5 +8,4 @@ function spring_rates()
     figure();
     subplot 
     T.plot('x1','F');
-    
 end
