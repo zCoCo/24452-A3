@@ -3,9 +3,11 @@ function logdec_test()
     m = 100; c = 0.5; k = 0.134;
     sys = tf(1, [m c k]);
 
-    % Create E-Table of Synthetic Data:
+    % Create Synthetic Data:
     [Y,t] = step(sys);
-    Y = Y + sin(1000*t) .* (Y-Y(end))/2;
+    Y = Y + sin(1000*t) .* (Y-Y(end))/2; % add some noise
+
+    % Shove the raw data into an ETable as if we had collected it:
     tab = cell2table(cellstr(sprintfc('%d',[t,Y])));
     tab.Properties.VariableDescriptions = {'Time [s]', 'Output [m]'};
     T = ETable(tab, ["t", "y"]);
