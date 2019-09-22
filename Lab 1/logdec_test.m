@@ -1,7 +1,6 @@
 function logdec_test()
     % Setup Dummy System:
     m = 100; c = 0.5; k = 0.134;
-    z_target = (c / m)/2/sqrt(k/m)
     sys = tf(1, [m c k]);
 
     % Create E-Table of Synthetic Data:
@@ -25,6 +24,7 @@ function logdec_test()
     hold off
     
     % Reconstruct System Parameters to Verify Accuracy:
+    % (assuming mass has already been experimentally verified).
     ce = 2*z*wn*m
     ke = m*wn^2
 end
