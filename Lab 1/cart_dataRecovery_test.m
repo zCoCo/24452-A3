@@ -1,4 +1,5 @@
 function cart_dataRecovery_test()
+    addpath('..');
     %% Pseudo-experiment:
     
     % Setup Dummy System:

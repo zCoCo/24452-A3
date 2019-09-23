@@ -1,4 +1,5 @@
 function logdec_test()
+    addpath('..');
     % Setup Dummy System:
     m = 100; c = 0.5; k = 0.134;
     sys = tf(1, [m c k]);
