@@ -27,7 +27,7 @@ function cart_dataRecovery_test()
     % Shove the raw data into an ETable as if we had collected it:
     tab = cell2table(cellstr(sprintfc('%d',[t,Y1,Y2])));
     tab.Properties.VariableDescriptions = {'Time [s]', 'Output 1 [m]','Output 2 [m]'};
-    T = ETable(tab, ["t", "y1", "y2"]);
+    T = ETable(tab, ["t", "y1", "y2"]); % Loads in, conditions, and formats data
     T.unitsList = ["s", "m", "m"];
     
     % Plot Output to Verify ETable Conversion:
