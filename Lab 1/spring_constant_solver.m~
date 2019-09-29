@@ -30,8 +30,8 @@ function spring_constant_solver(root, test)
     k = Ts.spring('F','x1');
 
     %% PLOT DATA
-    figure();
-    Ts.plot('x1','F', true(size(Ts.x1)),'x')
+    
+    Ts.plot('x1','F')
     hold on;
     y = polyval(k,Ts.x1);
     plot(Ts.x1,y);
