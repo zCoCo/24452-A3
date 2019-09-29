@@ -7,5 +7,6 @@ function spring_rates()
     
     figure();
     subplot 
-    T.plot('x1','F');
+    p = T.plot('x1','F');
+    p.set('MarkerEdgeColor', 'red');
 end
