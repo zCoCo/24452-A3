@@ -70,7 +70,7 @@ function [wn, z] = multi_logdec(root, varargin)
     peaks = {};
     yinf = zeros(n,1);
     for i = 1:n
-        [z(i), wn(i), peaks{i}, yinf(i)]  = Ts{i}.logdec('t','x1', Ts{i}.t > t_start(1));
+        [z(i), wn(i), peaks{i}, yinf(i)]  = Ts{i}.logdec('t','x1', Ts{i}.t > t_start(i));
     end
     
     %% VISUALIZE DATA TO VERIFY LOG DECREMENT PEAK SELECTION:
