@@ -44,12 +44,19 @@ function [wn, z] = multi_logdec(root, varargin)
     end
     
     % Assign (latex formatted) Units to Each Column:
-    for i=1:2
+    for i=1:numel(Ts)
         Ts{i}.unitsList = ["s","N", "m","m","m", "", "$\tfrac{m}{s}$","$\tfrac{m}{s}$","$\tfrac{m}{s}$", "$\tfrac{m}{s^2}$","$\tfrac{m}{s^2}$","$\tfrac{m}{s^2}$", ""];
   
         % Rename Poorly Named Columns:
         Ts{i}.rename('t', 'Time [s]');
         Ts{i}.rename('F', 'Force [N]');
+        
+        % Find the Displacement with the Highest Peak and Assume that's
+        % where the data is and treat that as 'x1' (the data of interest):
+        dataPeaks = [max(Ts{i}.x1), max(Ts{i}.x2), max(Ts{i}.x3)];
+        [~, activeDataColumn] = max(dataPeaks);
+        Ts{i}.edit('x1', Ts{i}.get(char("x"+activeDataColumn)));
+        
         % Update to SI Base Units:
         Ts{i}.edit('x1', Ts{i}.x1 * 1e-3);
         Ts{i}.rename('x1', 'Displacement 1 [m]');
@@ -86,7 +93,7 @@ function [wn, z] = multi_logdec(root, varargin)
         
         % Create the Legend:
         if isnumeric(testMasses{i})
-            massesList{i} = sprintf('%.0f, ' , testMasses{i}*1000);
+            massesList{i} = sprintf('%.0f, ' , testMasses{i});
             massesList{i} = massesList{i}(1:end-2);
         else
             massesList{i} = testMasses{i};
@@ -100,14 +107,14 @@ function [wn, z] = multi_logdec(root, varargin)
         scatter(peaks{i}.X-t_start(i), peaks{i}.Y);
         % Plot Envelopes to Verify Collected z,wn:
         envDecay = @(t) (peaks{i}.Y(1)-yinf(i))*exp(-z(i).*wn(i).*(t-peaks{i}.X(1)+t_start(i)))./sqrt(1-z(i)^2);
-        fplot(@(t)yinf(i) + envDecay(t), [0, T.t(end)], 'k:');
-        fplot(@(t)yinf(i) - envDecay(t), [0, T.t(end)], 'k:');
+        fplot(@(t)yinf(i) + envDecay(t), [0, T.t(end)], ':');
+        fplot(@(t)yinf(i) - envDecay(t), [0, T.t(end)], ':');
         hold off
         
         % Create the Legend:
-        leg{2*n + (i-1)*3 + 1} = char("Peaks used in LogDec for "+testID{i});
-        leg{2*n + (i-1)*3 + 2} = char("Upper Envelope of test "+testID{i}+" from calculated $\omega_n$, $\zeta$");
-        leg{2*n + (i-1)*3 + 3} = char("Lower Envelope of test "+testID{i}+" from calculated $\omega_n$, $\zeta$");
+        leg{2*n + (i-1)*3 + 1} = char("Peaks used in Logarithmic Decrement for "+testID{i});
+        leg{2*n + (i-1)*3 + 2} = char("Upper Envelope of test "+testID{i}+" built using calculated $\omega_n$, $\zeta$");
+        leg{2*n + (i-1)*3 + 3} = char("Lower Envelope of test "+testID{i}+" built using calculated $\omega_n$, $\zeta$");
     end
     legend(leg, 'Interpreter', 'latex');
 end

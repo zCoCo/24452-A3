@@ -20,6 +20,8 @@ function rect_q2()
     % Reconstruct System Parameters to Verify Accuracy:
     % (assuming mass has already been experimentally verified).
     res = struct(); % Results
+    res.z1 = z(1);
+    res.z2 = z(2);
     res.M = (m2*wn(2)^2 - m1*wn(1)^2) / (wn(1)^2 - wn(2)^2); % Remaining Unknown mass
     res.k1 = (res.M + m1)*wn(1)^2;
     res.k2 = (res.M + m2)*wn(2)^2;
