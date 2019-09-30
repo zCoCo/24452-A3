@@ -70,7 +70,7 @@ function [wn, z] = multi_logdec(root, varargin)
     peaks = {};
     yinf = zeros(n,1);
     for i = 1:n
-        [z(i), wn(i), peaks{i}, yinf(i)]  = Ts{1}.logdec('t','x1', Ts{1}.t > t_start(1));
+        [z(i), wn(i), peaks{i}, yinf(i)]  = Ts{i}.logdec('t','x1', Ts{i}.t > t_start(1));
     end
     
     %% VISUALIZE DATA TO VERIFY LOG DECREMENT PEAK SELECTION:
@@ -85,9 +85,9 @@ function [wn, z] = multi_logdec(root, varargin)
         ETable.hline(Ts{i}.x1(end), '', 'left', 'bottom');
         hold on
         % Highlight peaks used on the plot:
-        scatter(peaks{i}.X-t_start(1), peaks{i}.Y);
+        scatter(peaks{i}.X-t_start(i), peaks{i}.Y);
         % Plot Envelopes to Verify Collected z,wn:
-        envDecay = @(t) (peaks{i}.Y(1)-yinf(i))*exp(-z(i).*wn(i).*(t-peaks{i}.X(1)+t_start(1)))./sqrt(1-z(i)^2);
+        envDecay = @(t) (peaks{i}.Y(1)-yinf(i))*exp(-z(i).*wn(i).*(t-peaks{i}.X(1)+t_start(i)))./sqrt(1-z(i)^2);
         fplot(@(t)yinf(i) + envDecay(t), [0, T.t(end)], 'k:');
         fplot(@(t)yinf(i) - envDecay(t), [0, T.t(end)], 'k:');
         hold off
