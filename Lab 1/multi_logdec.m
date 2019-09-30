@@ -29,7 +29,7 @@ function [wn, z] = multi_logdec(root, varargin)
     %% LOAD AND FORMAT DATA:
     Ts = {}; % Cell Array of ETables for Each Data Collection
     for i = 1:numel(testName)
-        test = testName{i};
+        test = testID{i};
         try
             % Load cached file if there is one
             load(char(root+test+".mat"), 'T');
@@ -83,6 +83,18 @@ function [wn, z] = multi_logdec(root, varargin)
         Ts{i}.plot('t', 'x1', Ts{i}.t >= t_start(i), '-', -t_start(i));
         % Also plot the equilibrium positions:
         ETable.hline(Ts{i}.x1(end), '', 'left', 'bottom');
+        
+        % Create the Legend:
+        if isnumeric(testMasses{i})
+            massesList{i} = sprintf('%.0f, ' , testMasses{i}*1000);
+            massesList{i} = massesList{i}(1:end-2);
+        else
+            massesList{i} = testMasses{i};
+        end
+        leg{2*(i-1) + 1} = char(testID{i}+": Cart with Known Masses: "+massesList{i});
+        leg{2*(i-1) + 2} = char("Equilibrium Position of test "+testID{i});
+    end
+    for i = 1:numel(Ts)
         hold on
         % Highlight peaks used on the plot:
         scatter(peaks{i}.X-t_start(i), peaks{i}.Y);
@@ -93,16 +105,9 @@ function [wn, z] = multi_logdec(root, varargin)
         hold off
         
         % Create the Legend:
-        if isnumeric(testMasses{i})
-            massesList{i} = sprintf('%.0f, ' , testMasses{i}*1000);
-            massesList{i} = massesList{i}(1:end-2);
-        else
-            massesList{i} = testMasses{i};
-        end
-        leg{(i-1)*4 + 1} = char(testID{i}+": Cart with Known Masses: "+massesList{i});
-        leg{(i-1)*4 + 2} = char("Peaks used in LogDec for "+testID{i});
-        leg{(i-1)*4 + 3} = char("Upper Enveloped of test "+testID{i}+" from calculated $\omega_n$, $\zeta$");
-        leg{(i-1)*4 + 4} = char("Lower Enveloped of test "+testID{i}+" from calculated $\omega_n$, $\zeta$");
+        leg{2*n + (i-1)*3 + 1} = char("Peaks used in LogDec for "+testID{i});
+        leg{2*n + (i-1)*3 + 2} = char("Upper Envelope of test "+testID{i}+" from calculated $\omega_n$, $\zeta$");
+        leg{2*n + (i-1)*3 + 3} = char("Lower Envelope of test "+testID{i}+" from calculated $\omega_n$, $\zeta$");
     end
     legend(leg, 'Interpreter', 'latex');
 end
