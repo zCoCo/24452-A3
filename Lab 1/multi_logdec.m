@@ -29,7 +29,7 @@ function [wn, z] = multi_logdec(root, varargin)
     %% LOAD AND FORMAT DATA:
     Ts = {}; % Cell Array of ETables for Each Data Collection
     for i = 1:numel(testName)
-        test = testID{i};
+        test = testName{i};
         try
             % Load cached file if there is one
             load(char(root+test+".mat"), 'T');
