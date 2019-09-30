@@ -1,7 +1,7 @@
 % Recover all system properties possible from two subsequent trials of a
 % cart in free vibration with different known masses attached to it as
 % required by problem Q2 in the rectilinear section.
-function rect_q2()
+function rect_q7()
     % PRIOR KNOWNS:
     % Masses of Blocks [kg]:
     mb1 = 490.5e-3; 
@@ -11,16 +11,19 @@ function rect_q2()
     
     % Known Mass added to Each Cart [kg]:
     m1 = mb1 + mb2 + mb6; % Known mass added to cart in experiment 1
-    m2 = 0; % Known mass added to cart in experiment 2
+    m2 = mb1 + mb2; % Known mass added to cart in experiment 2
     
-    root = "RectData/exp2/car1/";
-    [wn, z] = multi_logdec(root, "2.1.1", "test1", [1,2,6], "2.1.3", "test3", "none"); % Returns Experimental Results
+    root = "RectData/exp2/car3/";
+    [wn, z] = multi_logdec(root, "2.3.1", "test1", [1,2,6], "2.3.2", "test2", [1,2]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
+    
     
     % Reconstruct System Parameters:
     res = struct(); % Results
     res.z1 = z(1);
     res.z2 = z(2);
+    res.wn1 = wn(1);
+    res.wn2 = wn(2);
     res.M = (m2*wn(2)^2 - m1*wn(1)^2) / (wn(1)^2 - wn(2)^2); % Remaining Unknown mass
     res.k1 = (res.M + m1)*wn(1)^2;
     res.k2 = (res.M + m2)*wn(2)^2;

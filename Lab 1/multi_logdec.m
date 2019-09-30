@@ -15,7 +15,7 @@
 % 
 % Returns a vectors of the natural frequencies, wn, and damping ratios, 
 % z, of each experiment.
-function [wn, z] = multi_logdec(root, varargin)
+function [wn, z, Ts, t_start] = multi_logdec(root, varargin)
     addpath('..');
     
     if mod(numel(varargin),3) ~= 0

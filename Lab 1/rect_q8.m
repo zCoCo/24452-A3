@@ -1,7 +1,7 @@
 % Recover all system properties possible from two subsequent trials of a
 % cart in free vibration with different known masses attached to it as
 % required by problem Q2 in the rectilinear section.
-function rect_q4()
+function rect_q8()
     % PRIOR KNOWNS:
     % Masses of Blocks [kg]:
     mb1 = 490.5e-3; 
@@ -9,24 +9,23 @@ function rect_q4()
     mb3 = 240.5e-3;
     mb6 = 490.5e-3;
     
-    Mc = 0.7682; % Empirically determined unloaded cart mass
+    Mc = 0.5527; % Empirically determined unloaded cart mass
+    c0 = mean([0.9747,1.1031]); % Empirically determined base system damping
     
-    % Known Total Mass of Each Cart and its Load[kg]:
-    m4 = Mc; % Known mass added to cart in experiment 4
-    m5 = Mc + mb1 + mb2 + mb6 + mb3; % Known mass added to cart in experiment 5
+    % Known Base Mass of Each Cart [kg]:
+    M = Mc + mb1 + mb2;
     
-    root = "RectData/exp2/car1/";
-    [wn, z] = multi_logdec(root, "2.1.4", "test4", "none", "2.1.5", "test5", [1,2,6,3]); % Returns Experimental Results
+    root = "RectData/exp2/car3/";
+    [wn, z] = multi_logdec(root, "2.3.3", "test3", [1,2]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
+    
     
     % Reconstruct System Parameters:
     res = struct(); % Results
-    res.kmed = m4 * wn(1)^2;
-    res.klow = m5 * wn(2)^2;
-    res.z4 = z(1);
-    res.z5 = z(2);
-    res.c4 = 2*z(1)*wn(1)*m4;
-    res.c5 = 2*z(2)*wn(2)*m5;
+    res.z = z;
+    res.wn = wn;
+    res.c = 2 * z * wn * M;
+    res.Dc = res.c - c0;
     
     % Display Results for Evaluation:
     disp("Parameters Recovered from Data (in SI Base Units):");

@@ -17,8 +17,7 @@ function rect_q3()
     [wn, ~] = multi_logdec(root, "2.1.1", "test1", [1,2,6], "2.1.2", "test2", [1,2,6,3]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
     
-    % Reconstruct System Parameters to Verify Accuracy:
-    % (assuming mass has already been experimentally verified).
+    % Reconstruct System Parameters:
     res = struct(); % Results
     res.m3 = (M*wn(1)^2 - M*wn(2)^2) / wn(2)^2; % Remaining Unknown mass
     
