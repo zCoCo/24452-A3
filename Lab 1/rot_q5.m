@@ -13,7 +13,7 @@ function [sys1, sys2] = rot_q5()
     J2 = (mb1 + mb2 + mb3)*(9e-2)^2; % Known inertia added to disk in experiment 2 (point mass assumption)
     
     root = "RotData/exp2_disk2/";
-    [wn, z, tables, t_start] = multi_logdec(root, "1", "test1", "none", "2", "test2", [1,2,3]); % Returns Experimental Results
+    [wn, z, tables, t_start, t_end] = multi_logdec(root, "1", "test1", "none", "2", "test2", [1,2,3]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
     
     
@@ -32,17 +32,19 @@ function [sys1, sys2] = rot_q5()
     disp(res);
     % Return Complete 2nd Order System Parameters (for use in rect_q9):
     sys1 = struct(); % For first experiment
-    sys1.j = res.J + J1;
+    sys1.J = res.J + J1;
     sys1.b = res.b1;
     sys1.k = res.k1;
     sys1.data = tables{1}; % Data table of experiment
     sys1.t0 = t_start(1); % Start time of free-vibration.
+    sys1.tf = t_end(1); % Start time of free-vibration.
     
     sys2 = struct(); % For first experiment
-    sys2.j = res.J + J2;
+    sys2.J = res.J + J2;
     sys2.b = res.b2;
     sys2.k = res.k2;
     sys2.data = tables{2}; % Data table of experiment
     sys2.t0 = t_start(2); % Start time of free-vibration.
+    sys2.tf = t_end(2); % Start time of free-vibration.
     
 end

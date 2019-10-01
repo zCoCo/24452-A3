@@ -14,10 +14,11 @@
 % 'none' (for labelling the legend only).
 % 
 % Returns a vectors of the natural frequencies, wn, damping ratios, z, of 
-% each experiment, a cell array of all the ETables used, Ts, and a vector 
+% each experiment, a cell array of all the ETables used, Ts, a vector 
 % of the indentified start times of free vibration for each experiment,
-% t_start.
-function [wn, z, Ts, t_start] = multi_logdec(root, varargin)
+% t_start, and a vector of when the response is suitably over (plotting
+% should be stopped).
+function [wn, z, Ts, t_start, t_end] = multi_logdec(root, varargin)
     addpath('..');
     
     if mod(numel(varargin),3) ~= 0
@@ -45,11 +46,13 @@ function [wn, z, Ts, t_start] = multi_logdec(root, varargin)
         end
     end
     
-    % Figure out the Displacement Units:
+    % Figure out the Displacement Units and scaling:
     if contains(root, "Rect")
-        xunits = "m";
+        xunits = "m"; % target units
+        scaling = 1e-3; % raw units of mm need to become m
     else
-        xunits = "rad";
+        xunits = "rad"; % target units
+        scaling = 1; % raw units stay as rad
     end
         
     
@@ -70,11 +73,11 @@ function [wn, z, Ts, t_start] = multi_logdec(root, varargin)
         Ts{i}.edit('a1', Ts{i}.get(char("a"+activeDataColumn)));
         
         % Update to SI Base Units:
-        Ts{i}.edit('x1', Ts{i}.x1 * 1e-3);
+        Ts{i}.edit('x1', Ts{i}.x1 * scaling);
         Ts{i}.rename('x1', char("Displacement 1 ["+xunits+"]"));
-        Ts{i}.edit('v1', Ts{i}.v1 * 1e-3);
+        Ts{i}.edit('v1', Ts{i}.v1 * scaling);
         Ts{i}.rename('v1', char("Velocity 1 [$^{"+xunits+"}/_s$]"));
-        Ts{i}.edit('a1', Ts{i}.a1 * 1e-3);
+        Ts{i}.edit('a1', Ts{i}.a1 * scaling);
         Ts{i}.rename('a1', char("Acceleration 1 [$^{"+xunits+"}/_{s^2}$]"));
     end
     
@@ -133,4 +136,8 @@ function [wn, z, Ts, t_start] = multi_logdec(root, varargin)
         leg{2*n + (i-1)*3 + 3} = char("Lower Envelope of test "+testID{i}+" built using calculated $\omega_n$, $\zeta$");
     end
     legend(leg, 'Interpreter', 'latex');
+    
+    for i = 1:n
+        t_end(i) = min([Ts{i}.t(end) - t_start(i), (peaks{i}.X(end) - t_start(i)) * 1.5]);
+    end
 end
