@@ -14,7 +14,7 @@ function rect_q7()
     m2 = mb1 + mb2; % Known mass added to cart in experiment 2
     
     root = "RectData/exp2/car3/";
-    [wn, z] = multi_logdec(root, "2.3.1", "test1", [1,2,6], "2.3.2", "test2", [1,2]); % Returns Experimental Results
+    [wn, z] = multi_logdec(root, "1", "test1", [1,2,6], "2", "test2", [1,2]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
     
     

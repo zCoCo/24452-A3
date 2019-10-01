@@ -14,7 +14,7 @@ function [sys1, sys2] = rect_q6()
     m2 = mb1 + mb2 + mb6 + mb3; % Known mass added to cart in experiment 2
     
     root = "RectData/exp2/car2/";
-    [wn, z, tables, t_start] = multi_logdec(root, "2.2.1", "test1", [1,2,6], "2.2.2", "test2", [1,2,6,3]); % Returns Experimental Results
+    [wn, z, tables, t_start, t_end] = multi_logdec(root, "1", "test1", [1,2,6], "2", "test2", [1,2,6,3]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
     
     
@@ -43,6 +43,7 @@ function [sys1, sys2] = rect_q6()
     sys1.k = res.k1;
     sys1.data = tables{1}; % Data table of experiment
     sys1.t0 = t_start(1); % Start time of free-vibration.
+    sys1.tf = t_end(1); % End time of data
     
     sys2 = struct(); % For first experiment
     sys2.m = res.M + m2;
@@ -50,5 +51,6 @@ function [sys1, sys2] = rect_q6()
     sys2.k = res.k2;
     sys2.data = tables{2}; % Data table of experiment
     sys2.t0 = t_start(2); % Start time of free-vibration.
+    sys2.tf = t_end(2); % End time of data
     
 end

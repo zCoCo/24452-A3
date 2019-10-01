@@ -69,16 +69,26 @@ function [wn, z, Ts, t_start, t_end] = multi_logdec(root, varargin)
         dataPeaks = [max(Ts{i}.x1), max(Ts{i}.x2), max(Ts{i}.x3)];
         [~, activeDataColumn] = max(dataPeaks);
         Ts{i}.edit('x1', Ts{i}.get(char("x"+activeDataColumn)));
-        Ts{i}.edit('v1', Ts{i}.get(char("v"+activeDataColumn)));
-        Ts{i}.edit('a1', Ts{i}.get(char("a"+activeDataColumn)));
+        try
+            Ts{i}.edit('v1', Ts{i}.get(char("v"+activeDataColumn)));
+            Ts{i}.edit('a1', Ts{i}.get(char("a"+activeDataColumn)));
+        catch e
+            % File formatting error. Don't worry about it here.
+            warning(e.message);
+        end
         
         % Update to SI Base Units:
         Ts{i}.edit('x1', Ts{i}.x1 * scaling);
         Ts{i}.rename('x1', char("Displacement 1 ["+xunits+"]"));
         Ts{i}.edit('v1', Ts{i}.v1 * scaling);
         Ts{i}.rename('v1', char("Velocity 1 [$^{"+xunits+"}/_s$]"));
-        Ts{i}.edit('a1', Ts{i}.a1 * scaling);
-        Ts{i}.rename('a1', char("Acceleration 1 [$^{"+xunits+"}/_{s^2}$]"));
+        try
+            Ts{i}.edit('a1', Ts{i}.a1 * scaling);
+            Ts{i}.rename('a1', char("Acceleration 1 [$^{"+xunits+"}/_{s^2}$]"));
+        catch e
+            % File formatting error. Don't worry about it here.
+            warning(e.message);
+        end
     end
     
     %% ANALYZE DATA:
@@ -126,8 +136,8 @@ function [wn, z, Ts, t_start, t_end] = multi_logdec(root, varargin)
         scatter(peaks{i}.X-t_start(i), peaks{i}.Y);
         % Plot Envelopes to Verify Collected z,wn:
         envDecay = @(t) (peaks{i}.Y(1)-yinf(i))*exp(-z(i).*wn(i).*(t-peaks{i}.X(1)+t_start(i)))./sqrt(1-z(i)^2);
-        fplot(@(t)yinf(i) + envDecay(t), [0, Ts{i}.t(end)], ':');
-        fplot(@(t)yinf(i) - envDecay(t), [0, Ts{i}.t(end)], ':');
+        fplot(@(t)yinf(i) + envDecay(t), [0, Ts{i}.t(end) - t_start(i)], ':');
+        fplot(@(t)yinf(i) - envDecay(t), [0, Ts{i}.t(end) - t_start(i)], ':');
         hold off
         
         % Create the Legend:

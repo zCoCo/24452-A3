@@ -37,7 +37,7 @@ function [sys1, sys2] = rot_q5()
     sys1.k = res.k1;
     sys1.data = tables{1}; % Data table of experiment
     sys1.t0 = t_start(1); % Start time of free-vibration.
-    sys1.tf = t_end(1); % Start time of free-vibration.
+    sys1.tf = t_end(1); % End time of data
     
     sys2 = struct(); % For first experiment
     sys2.J = res.J + J2;
@@ -45,6 +45,6 @@ function [sys1, sys2] = rot_q5()
     sys2.k = res.k2;
     sys2.data = tables{2}; % Data table of experiment
     sys2.t0 = t_start(2); % Start time of free-vibration.
-    sys2.tf = t_end(2); % Start time of free-vibration.
+    sys2.tf = t_end(2); % End time of data
     
 end

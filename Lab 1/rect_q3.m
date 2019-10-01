@@ -14,7 +14,7 @@ function rect_q3()
     M = Mc + mb1 + mb2 + mb6;
     
     root = "RectData/exp2/car1/";
-    [wn, ~] = multi_logdec(root, "2.1.1", "test1", [1,2,6], "2.1.2", "test2", [1,2,6,3]); % Returns Experimental Results
+    [wn, ~] = multi_logdec(root, "1", "test1", [1,2,6], "2", "test2", [1,2,6,3]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
     
     % Reconstruct System Parameters:

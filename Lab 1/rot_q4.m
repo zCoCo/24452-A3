@@ -1,7 +1,7 @@
 % Recover all system properties possible from two subsequent trials of a
 % cart in free vibration with different known masses attached to it as
 % required by problem Q2 in the rectilinear section.
-function rect_q4()
+function _q4()
     % PRIOR KNOWNS:
     % Masses of Blocks [kg]:
     mb1 = 490.5e-3; 
@@ -16,7 +16,7 @@ function rect_q4()
     m5 = Mc + mb1 + mb2 + mb6 + mb3; % Known mass added to cart in experiment 5
     
     root = "RectData/exp2/car1/";
-    [wn, z] = multi_logdec(root, "4", "test4", "none", "5", "test5", [1,2,6,3]); % Returns Experimental Results
+    [wn, z] = multi_logdec(root, "2.1.4", "test4", "none", "2.1.5", "test5", [1,2,6,3]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
     
     % Reconstruct System Parameters:

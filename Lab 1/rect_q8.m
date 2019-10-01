@@ -16,7 +16,7 @@ function rect_q8()
     M = Mc + mb1 + mb2;
     
     root = "RectData/exp2/car3/";
-    [wn, z] = multi_logdec(root, "2.3.3", "test3", [1,2]); % Returns Experimental Results
+    [wn, z] = multi_logdec(root, "3", "test3", [1,2]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
     
     
