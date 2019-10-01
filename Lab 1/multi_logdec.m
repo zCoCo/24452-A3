@@ -13,8 +13,10 @@
 % - testMasses is the a list of the masses known to be on the cart or
 % 'none' (for labelling the legend only).
 % 
-% Returns a vectors of the natural frequencies, wn, and damping ratios, 
-% z, of each experiment.
+% Returns a vectors of the natural frequencies, wn, damping ratios, z, of 
+% each experiment, a cell array of all the ETables used, Ts, and a vector 
+% of the indentified start times of free vibration for each experiment,
+% t_start.
 function [wn, z, Ts, t_start] = multi_logdec(root, varargin)
     addpath('..');
     
@@ -43,9 +45,17 @@ function [wn, z, Ts, t_start] = multi_logdec(root, varargin)
         end
     end
     
+    % Figure out the Displacement Units:
+    if contains(root, "Rect")
+        xunits = "m";
+    else
+        xunits = "rad";
+    end
+        
+    
     % Assign (latex formatted) Units to Each Column:
     for i=1:numel(Ts)
-        Ts{i}.unitsList = ["s","N", "m","m","m", "", "$\tfrac{m}{s}$","$\tfrac{m}{s}$","$\tfrac{m}{s}$", "$\tfrac{m}{s^2}$","$\tfrac{m}{s^2}$","$\tfrac{m}{s^2}$", ""];
+        Ts{i}.unitsList = ["s","N", xunits,xunits,xunits, "", "$\tfrac{"+xunits+"}{s}$","$\tfrac{"+xunits+"}{s}$","$\tfrac{"+xunits+"}{s}$", "$\tfrac{"+xunits+"}{s^2}$","$\tfrac{"+xunits+"}{s^2}$","$\tfrac{"+xunits+"}{s^2}$", ""];
   
         % Rename Poorly Named Columns:
         Ts{i}.rename('t', 'Time [s]');
@@ -56,10 +66,16 @@ function [wn, z, Ts, t_start] = multi_logdec(root, varargin)
         dataPeaks = [max(Ts{i}.x1), max(Ts{i}.x2), max(Ts{i}.x3)];
         [~, activeDataColumn] = max(dataPeaks);
         Ts{i}.edit('x1', Ts{i}.get(char("x"+activeDataColumn)));
+        Ts{i}.edit('v1', Ts{i}.get(char("v"+activeDataColumn)));
+        Ts{i}.edit('a1', Ts{i}.get(char("a"+activeDataColumn)));
         
         % Update to SI Base Units:
         Ts{i}.edit('x1', Ts{i}.x1 * 1e-3);
-        Ts{i}.rename('x1', 'Displacement 1 [m]');
+        Ts{i}.rename('x1', char("Displacement 1 ["+xunits+"]"));
+        Ts{i}.edit('v1', Ts{i}.v1 * 1e-3);
+        Ts{i}.rename('v1', char("Velocity 1 [$^{"+xunits+"}/_s$]"));
+        Ts{i}.edit('a1', Ts{i}.a1 * 1e-3);
+        Ts{i}.rename('a1', char("Acceleration 1 [$^{"+xunits+"}/_{s^2}$]"));
     end
     
     %% ANALYZE DATA:

@@ -1,7 +1,7 @@
 % Recover all system properties possible from two subsequent trials of a
 % cart in free vibration with different known masses attached to it as
 % required by problem Q2 in the rectilinear section.
-function [sys1, sys2] = rect_q6()
+function [mT,cT,kT] = rect_q6()
     % PRIOR KNOWNS:
     % Masses of Blocks [kg]:
     mb1 = 490.5e-3; 
@@ -14,7 +14,7 @@ function [sys1, sys2] = rect_q6()
     m2 = mb1 + mb2 + mb6 + mb3; % Known mass added to cart in experiment 2
     
     root = "RectData/exp2/car2/";
-    [wn, z, tables, t_start] = multi_logdec(root, "2.2.1", "test1", [1,2,6], "2.2.2", "test2", [1,2,6,3]); % Returns Experimental Results
+    [wn, z] = multi_logdec(root, "2.2.1", "test1", [1,2,6], "2.2.2", "test2", [1,2,6,3]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
     
     
@@ -36,19 +36,8 @@ function [sys1, sys2] = rect_q6()
     disp("Damping Coefficient Percent Difference:");
     disp( 100 * abs(diff([res.c1 res.c2])) / mean([res.c1 res.c2]) );
     
-    % Return Complete 2nd Order System Parameters (for use in rect_q9):
-    sys1 = struct(); % For first experiment
-    sys1.m = res.M + m1;
-    sys1.c = res.c1;
-    sys1.k = res.k1;
-    sys1.data = tables{1}; % Data table of experiment
-    sys1.t0 = t_start(1); % Start time of free-vibration.
-    
-    sys2 = struct(); % For first experiment
-    sys2.m = res.M + m2;
-    sys2.c = res.c2;
-    sys2.k = res.k2;
-    sys2.data = tables{2}; % Data table of experiment
-    sys2.t0 = t_start(2); % Start time of free-vibration.
+    % Complete 2nd Order System Parameters
+    sys1 = struct();
+    sys1.m = res.M + 
     
 end
