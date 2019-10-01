@@ -123,8 +123,8 @@ function [wn, z, Ts, t_start] = multi_logdec(root, varargin)
         scatter(peaks{i}.X-t_start(i), peaks{i}.Y);
         % Plot Envelopes to Verify Collected z,wn:
         envDecay = @(t) (peaks{i}.Y(1)-yinf(i))*exp(-z(i).*wn(i).*(t-peaks{i}.X(1)+t_start(i)))./sqrt(1-z(i)^2);
-        fplot(@(t)yinf(i) + envDecay(t), [0, T.t(end)], ':');
-        fplot(@(t)yinf(i) - envDecay(t), [0, T.t(end)], ':');
+        fplot(@(t)yinf(i) + envDecay(t), [0, Ts{i}.t(end)], ':');
+        fplot(@(t)yinf(i) - envDecay(t), [0, Ts{i}.t(end)], ':');
         hold off
         
         % Create the Legend:

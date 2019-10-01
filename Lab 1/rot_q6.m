@@ -13,7 +13,7 @@ function [sys1, sys2] = rot_q6()
     J2 = (mb1 + mb2 + mb3)*(9e-2)^2; % Known inertia added to disk in experiment 2 (point mass assumption)
     
     root = "RotData/exp2_disk3/";
-    [wn, z, tables, t_start] = multi_logdec(root, "2.4.1", "test1", "none", "2.4.2", "test2", [1,2,3]); % Returns Experimental Results
+    [wn, z, tables, t_start] = multi_logdec(root, "1", "test1", "none", "2", "test2", [1,2,3]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
     
     
