@@ -16,9 +16,7 @@ function rot_q2()
     J2 = m2*(9e-2)^2
     
     root = "RotData/exp2_disk1/";
-    [wn, z] = multi_logdec(root, "1", "exp2_test1", "none", "2", "exp2_test2", [1,2,3]); % Returns Experimental Results
-    f = gcf;
-    f.WindowState = 'maximized';
+    [wn, z] = multi_logdec(root, "1", "test1", "none", "2", "test2", [1,2,3]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
     
     % Reconstruct System Parameters:

@@ -50,9 +50,11 @@ function [wn, z, Ts, t_start, t_end] = multi_logdec(root, varargin)
     if contains(root, "Rect")
         xunits = "m"; % target units
         scaling = 1e-3; % raw units of mm need to become m
+        carrier = "Cart";
     else
         xunits = "rad"; % target units
         scaling = 1; % raw units stay as rad
+        carrier = "Disk";
     end
         
     
@@ -127,7 +129,7 @@ function [wn, z, Ts, t_start, t_end] = multi_logdec(root, varargin)
         else
             massesList{i} = testMasses{i};
         end
-        leg{2*(i-1) + 1} = char(testID{i}+": Cart with Known Masses: "+massesList{i});
+        leg{2*(i-1) + 1} = char(testID{i}+": "+carrier+" with Known Masses: "+massesList{i});
         leg{2*(i-1) + 2} = char("Equilibrium Position of test "+testID{i});
     end
     for i = 1:numel(Ts)

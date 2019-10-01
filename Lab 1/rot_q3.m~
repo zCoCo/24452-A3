@@ -19,7 +19,7 @@ function rot_q3()
     J = Jdisk + (mb1 + mb2 + mb3) * (9e-2)^2;
     
     root = "RotData/exp2_disk1/";
-    [wn, ~] = multi_logdec(root, "2", "test2", [1,2,3], "3", "test3", [1,2,3,4]); % Returns Experimental Results
+    [wn, ~] = multi_logdec(root, "2", "exp2_test2", [1,2,6], "3", "exp2test3", [1,2,6,3]); % Returns Experimental Results
     saveas(gcf, char(mfilename+".png"), 'png');
     
     % Reconstruct System Parameters:
