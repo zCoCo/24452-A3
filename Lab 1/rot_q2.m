@@ -9,18 +9,14 @@ function rot_q2()
     mb3 = 501.25e-3;
     mb4 = 502.25e-3;
     
-    % parallel axis theorem: 1/2*m_block*r_block^2 + 1/2
-    % Known Mass added to Each Cart [kg]:
-    m2j = @(m) (m*9e-2)^2 / 2;
-    
+    % Known Mass added to Each Disk [kg]:
     m1 = 0; % Known mass added to disk in experiment 1
     m2 = mb1+ mb2 +mb3+mb4; % Known mass added to disk in experiment 2
-    radius_block = 0.0381; % 1.5 inches 
     J1 = m1*(9e-2)^2
     J2 = m2*(9e-2)^2
     
     root = "RotData/exp2_disk1/";
-    [wn, z] = multi_logdec(root, "trial1", "exp2_test1", "none", "trial2", "exp2_test2", [1,2,3]); % Returns Experimental Results
+    [wn, z] = multi_logdec(root, "1", "exp2_test1", "none", "2", "exp2_test2", [1,2,3]); % Returns Experimental Results
     f = gcf;
     f.WindowState = 'maximized';
     saveas(gcf, char(mfilename+".png"), 'png');

@@ -1,0 +1,23 @@
+
+wn_average =
+
+    9.2268
+
+
+z_average =
+
+    0.0737
+
+
+wn_stdv =
+
+    0.3272
+
+
+z_stdv =
+
+    0.0076
+
+
+standard deviation for zeta << standard deviation wn
+-- due to error propagation 
