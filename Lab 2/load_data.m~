@@ -1,0 +1,35 @@
+% Loads and Formats Data as an ETable from the File at Address 'addr' which has
+% displacement units of 'xunits'
+function T = load_data(addr, xunits)
+T = ETable.CachedLoad(addr, ETOptions(xunits));
+% Rename Poorly Named Columns:
+T.rename('t', 'Time [s]');
+T.rename('F', 'Force [N]');
+
+    % Figure out the Displacement Units and scaling:
+    if contains(root, "Rect")
+        xunits = "m"; % target units
+        scaling = 1e-3; % raw units of mm need to become m
+        carrier = "Cart";
+    else
+        xunits = "rad"; % target units
+        scaling = 1; % raw units stay as rad
+        carrier = "Disk";
+    end
+
+% Update to SI Base Units:
+if xunits == "m" % Rectilinear:
+    scaling = 1e-3; % mm -> m
+else
+    scaling = 1; % keep as rad
+end
+for i = 1:3
+    T.edit(char('x'+i), T.x1 * scaling);
+    T.rename(char('x'+i), char("Displacement 1 ["+xunits+"]"));
+    T.edit('v1', T.v1 * scaling);
+    T.rename('v1', char("Velocity 1 [$^{"+xunits+"}/_s$]"));
+    T.edit('a1', T.a1 * scaling);
+    T.rename('a1', char("Acceleration 1 [$^{"+xunits+"}/_{s^2}$]"));
+end
+
+end
