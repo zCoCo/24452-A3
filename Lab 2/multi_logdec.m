@@ -18,8 +18,8 @@
 % Returns a vectors of the natural frequencies, wn, damping ratios, z, of 
 % each experiment, a cell array of all the ETables used, Ts, a vector 
 % of the indentified start times of free vibration for each experiment,
-% t_start, and a vector of when the response is suitably over (plotting
-% should be stopped).
+% t_start, and a vector, t_end, of when the response is suitably over 
+% (plotting should be stopped).
 function [wn, z, Ts, t_start, t_end] = multi_logdec(xunits, root, varargin)
     addpath('..');
     
@@ -83,7 +83,7 @@ function [wn, z, Ts, t_start, t_end] = multi_logdec(xunits, root, varargin)
             massesList{i} = join(string(testMasses{i}), ', ');
         end
         leg{2*(i-1) + 1} = char("Test "+testID{i}+": "+carrier+" with Known Mass: "+massesList{i});
-        leg{2*(i-1) + 2} = char("Equilibrium Position of test "+testID{i});
+        leg{2*(i-1) + 2} = char("Equilibrium Position of Test "+testID{i});
     end
     for i = 1:numel(Ts)
         hold on
@@ -97,8 +97,8 @@ function [wn, z, Ts, t_start, t_end] = multi_logdec(xunits, root, varargin)
         
         % Create the Legend:
         leg{2*n + (i-1)*3 + 1} = char("Peaks used in Logarithmic Decrement for Test "+testID{i});
-        leg{2*n + (i-1)*3 + 2} = char("Upper Envelope of test "+testID{i}+" built using calculated $\omega_n$, $\zeta$");
-        leg{2*n + (i-1)*3 + 3} = char("Lower Envelope of test "+testID{i}+" built using calculated $\omega_n$, $\zeta$");
+        leg{2*n + (i-1)*3 + 2} = char("Upper Envelope of Test "+testID{i}+" built using calculated $\omega_n$, $\zeta$");
+        leg{2*n + (i-1)*3 + 3} = char("Lower Envelope of Test "+testID{i}+" built using calculated $\omega_n$, $\zeta$");
     end
     legend(leg, 'Interpreter', 'latex');
     
