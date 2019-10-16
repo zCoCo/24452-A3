@@ -41,8 +41,10 @@ function [wn, z, Ts, t_start, t_end] = multi_logdec(xunits, root, varargin)
     % Determine string to be used to refer to carrier:
     if xunits == "m" % Rectilinear:
         carrier = "Cart";
+        massTerm = "Mass";
     else % Torsional:
         carrier = "Disk";
+        massTerm = "Inertia";
     end
 
     
@@ -82,7 +84,7 @@ function [wn, z, Ts, t_start, t_end] = multi_logdec(xunits, root, varargin)
         else
             massesList{i} = join(string(testMasses{i}), ', ');
         end
-        leg{2*(i-1) + 1} = char("Test "+testID{i}+": "+carrier+" with Known Mass: "+massesList{i});
+        leg{2*(i-1) + 1} = char("Test "+testID{i}+": "+carrier+" with Known "+massTerm+": "+massesList{i});
         leg{2*(i-1) + 2} = char("Equilibrium Position of Test "+testID{i});
     end
     for i = 1:numel(Ts)
