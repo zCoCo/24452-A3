@@ -1,0 +1,60 @@
+%Question 14 For Experiment 5 (Fourier Series Expansion), first plot the 
+%experimental FRF associated with one of the FRF that you obtained from 
+%Experiment 2. Then, read the amplitude ratio and phase from the FRF plot 
+%at each of the frequencies associated with Fourier Table (Note that 
+%frequency corresponding to the nth term is nw0, where w0 is the (base) 
+%frequency of the triangular function, and present those in a table. For
+%each line in Fourier Table, plot the timedomain response you obtained, 
+%and the response you determined from the FRFs. Make observations.
+function rot_q14()
+    [freq,amp,pha]=readfreq('RotData/Exp2/test2.txt',1,10);
+
+    w0 = 3.1416;
+    F0 = 8;
+    tf = 10;
+
+    AR = [];
+    shift = [];
+    
+    function xx = x(t)
+        xx = 0;
+        for j = 1:numel(AR)
+            xx = xx + AR(j).*F0.*sin(w.*t.*2.*pi + shift(j));
+        end
+    end
+    
+    for i=1:5
+        n = i*2-1; % 1,3,...
+        % Extract Data from FRF:
+        dist = abs(freq - n*w0/2/pi); % find distance to between each frequency point and the target freq n*w0.
+        [~,idx] = min(dist); % grab the index of the point closest to n*w0
+        idx = idx(1);
+        w = freq(idx); % [Hz] that's our new frequency (basically n*w0 but probably ever so slightly off)
+
+        AR(end+1) = amp(idx); % Amplitude Ratio at w
+        shift(end+1) = pha(idx); % Phase Shift at w
+
+        % Get Equivalent Function in Time Domain:
+        x = @(t) 
+        ts = linspace(0,tf, 250); % time points
+        xs = x(ts);
+
+        % Plot Equivalent Function in Time Domain:
+        figure(); 
+        plot(ts,xs);
+
+        % Plot Time Domain Function from Exp. 5:
+        file = textread(char("RotData/Exp5/test"+i+".txt"),'','headerlines',21);
+        time = file(:,1);
+        resp = file(:,3);
+        hold on
+            plot(time,resp);
+        hold off
+        xlabel('Time [s]');
+        ylabel('Displacement [mm]');
+        legend({'Response Computed from Exp.2 FRF', 'Exp.5 Time Domain Response'});
+        saveas(gcf, mfilename+"_test"+i+".png",'png'); % export figure
+    end
+end
+
+

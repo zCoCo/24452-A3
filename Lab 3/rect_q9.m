@@ -1,0 +1,36 @@
+% Plot FRF for all tests in Exp 3 where m was varied while k and c were
+% constant.
+function rect_q9()
+    %% PRIOR KNOWNS:
+    xunits = "mm";
+    
+    % Masses of Blocks [kg]:
+    mb1 = 490.5e-3; 
+    mb2 = 485.5e-3;
+    mb3 = 240.5e-3;
+    mb6 = 490.5e-3;
+    Mc = mean([0.768, 0.672, 0.553]); % Mean of Cart Masses Determined in Lab 1
+    
+    % Experiment IDs of Each Test where k and c are held constant:
+    exps = [7 8 9];
+    ms = [0 (mb1+mb2) (mb1+mb2+mb3+mb6)] + Mc; % System Mass
+    
+    %% SETUP:
+    fmin = 1; % [Hz] Min Frequency
+    fmax = 10; % [Hz] Max Frequency
+    rows = fmin*40+1:fmax*40+1; % selects the same rows that readfreq does
+    
+    %% LOAD, FORMAT, AND PLOT DATA:
+    figure();
+    leg = {}; % Cell Array of Legend Entries
+    Ts = {}; % Cell Array of ETables for Each Data Collection
+    for i = 1:numel(exps)
+        test = exps(i);
+        Ts{i} = load_freq(fullfile("RectData","Exp3","frf_"+test+".txt"), xunits);
+        Ts{i}.plot('f', 'FRF_A1', rows, '-');
+        leg{i} = "Test "+test+", Total System Mass: "+ms(i)+"$\,kg$";
+    end
+    ylabel('Amplitude [$^{mm}/_{N}$]', 'Interpreter','latex');
+    legend(leg, 'Location','northeast', 'Interpreter','latex');
+    saveas(gcf, mfilename+".png",'png');
+end

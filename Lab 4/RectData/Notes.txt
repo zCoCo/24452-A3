@@ -1,0 +1,16 @@
+Exp2_1 Res:
+Peak 1: 1.95 -- Peak 2: 2.8
+Exp2_2 Res:
+Peak 1: 2.075 -- Peak 2: 3.125
+Exp2_3 Res:
+Peak 1: 2.125 -- Peak 2: 3.225
+
+
+Exp3_2 : Y0: 23.58
+         Y1: 24.52  Ratio Them. Dont expect everything from TA/CAs, you are just so cute so here it is: 1.04
+
+
+Exp3_4 : Y0: 16.04
+	 Y1: 12.38
+	 Y1/Y0 = 0.77
+
